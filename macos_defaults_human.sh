@@ -243,37 +243,40 @@ defaults write com.apple.AppleMultitouchTrackpad TrackpadTwoFingerFromRightEdgeS
 # ==================== USB Mouse & Trackpad Behavior ====================
 defaults write com.apple.AppleMultitouchTrackpad USBMouseStopsTrackpad -int 0  # Keep trackpad enabled when using an external mouse
 
-# ==================== System Configuration ====================
-defaults write com.apple.AppleMultitouchTrackpad UserPreferences -int 1  # Ensure trackpad preferences are stored
-defaults write com.apple.AppleMultitouchTrackpad version -int 12  # Version identifier for trackpad settings
-
 # ==================== Keyboard Layout & Input Methods ====================
 # Customize the keyboard layout and input method settings.
 
 # Set default keyboard layout to ABC
 defaults write com.apple.HIToolbox AppleCurrentKeyboardLayoutInputSourceID -string "com.apple.keylayout.ABC"
 
+# Show language menu in the top right corner of the boot screen
+sudo defaults write /Library/Preferences/com.apple.loginwindow showInputMenu -bool true
+
 # Enable Apple Dictation
 defaults write com.apple.HIToolbox AppleDictationAutoEnable -int 1  
 
 # Configure primary keyboard layouts
-defaults write com.apple.HIToolbox InputSourceKind -string "Keyboard Layout"
-defaults write com.apple.HIToolbox KeyboardLayout ID -int 30778  # Czech-QWERTY layout
-defaults write com.apple.HIToolbox KeyboardLayout Name -string "Czech-QWERTY"
-defaults write com.apple.HIToolbox KeyboardLayout ID -int 252  # ABC layout
-defaults write com.apple.HIToolbox KeyboardLayout Name -string "ABC"
 
-# Additional input methods
-defaults write com.apple.HIToolbox KeyboardLayout ID -string "-2276"
-defaults write com.apple.HIToolbox KeyboardLayout Name -string "Mongolian-Cyrillic"
+# ABC layout
+defaults write com.apple.HIToolbox AppleEnabledInputSources -array-add '<dict><key>InputSourceKind</key><string>Keyboard Layout</string><key>KeyboardLayout ID</key><integer>252</integer><key>KeyboardLayout Name</key><string>ABC</string></dict>'
+# Czech-QWERTY layout
+defaults write com.apple.HIToolbox AppleEnabledInputSources -array-add '<dict><key>InputSourceKind</key><string>Keyboard Layout</string><key>KeyboardLayout ID</key><integer>30778</integer><key>KeyboardLayout Name</key><string>Czech-QWERTY</string></dict>'
+# Mongolian layout
+defaults write com.apple.HIToolbox AppleEnabledInputSources -array-add '<dict><key>InputSourceKind</key><string>Keyboard Layout</string><key>KeyboardLayout ID</key><integer>2276</integer><key>KeyboardLayout Name</key><string>Mongolian-Cyrillic</string></dict>'
 
-# Enable input methods for special characters and emojis
-defaults write com.apple.HIToolbox Bundle ID -string "com.apple.inputmethod.EmojiFunctionRowItem"
-defaults write com.apple.HIToolbox InputSourceKind -string "Non Keyboard Input Method"
+# Set language and text formats
+defaults write NSGlobalDomain AppleLanguages -array "en"
+defaults write NSGlobalDomain AppleLocale -string "cs_CZ@currency=CZK"
+defaults write NSGlobalDomain AppleMeasurementUnits -string "Centimeters"
+defaults write NSGlobalDomain AppleMetricUnits -bool true
 
-# Enable press-and-hold for special characters
-defaults write com.apple.HIToolbox Bundle ID -string "com.apple.PressAndHold"
-defaults write com.apple.HIToolbox InputSourceKind -string "Non Keyboard Input Method"
+# Disable press-and-hold for keys in favor of key repeat
+defaults write NSGlobalDomain ApplePressAndHoldEnabled -bool false
+
+# Set a blazingly fast keyboard repeat rate, and make it happen more quickly.
+# (The KeyRepeat option requires logging out and back in to take effect.)
+defaults write NSGlobalDomain InitialKeyRepeat -int 20
+defaults write NSGlobalDomain KeyRepeat -int 1
 
 # Set Function Key behavior
 defaults write com.apple.HIToolbox AppleFnUsageType -int 3  # Use function keys as standard keys
