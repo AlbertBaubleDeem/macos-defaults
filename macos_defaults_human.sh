@@ -85,10 +85,10 @@ if [[ "$RUN_AS_ROOT" = true ]]; then
   systemsetup -setrestartfreeze on
 fi
 
-# Disable smart quotes as they’re annoying when typing code
+# Disable smart quotes as they're annoying when typing code
 defaults write NSGlobalDomain NSAutomaticQuoteSubstitutionEnabled -bool false
 
-# Disable smart dashes as they’re annoying when typing code
+# Disable smart dashes as they're annoying when typing code
 defaults write NSGlobalDomain NSAutomaticDashSubstitutionEnabled -bool false
 
 # Disable Photos.app from opening when a device or card is plugged in:
@@ -181,7 +181,10 @@ defaults write com.apple.finder viewOptionsVersion -int 1  # Internal versioning
 
 # ==================== Dock Behavior ====================
 defaults write com.apple.dock autohide -int 1  # Automatically hide the Dock when not in use
-defaults write com.apple.dock largesize -int 128  # Maximum Dock icon size when magnified
+defaults write com.apple.dock tilesize -int 30 # Set the icon size of Dock items
+defaults write com.apple.dock largesize -int 40  # Maximum Dock icon size when magnified
+defaults write com.apple.dock expose-animation-duration -float 0.15 # Speed up Mission Control animations
+defaults write com.apple.dock showhidden -bool true # Make Dock icons of hidden applications translucent
 
 # ==================== Dock System Metadata ====================
 # These settings store system-related metadata and preferences.
@@ -192,20 +195,8 @@ defaults write com.apple.dock loc -string "en_GB:(null)"  # System localization 
 defaults write com.apple.dock mod-count -int 7780  # Number of modifications made to the Dock settings
 defaults write com.apple.dock GUID -int 2707065211  # Unique identifier for Dock settings
 
-# ==================== Dock Launchpad Settings ====================
-defaults write com.apple.dock book -string "{length = 584, bytes = 0x626f6f6b 48020000 00000410 30000000 ... 04000000 00000000 }"
-# Stores information related to Launchpad settings (binary data, not manually editable).
-
-defaults write com.apple.dock bundle-identifier -string "com.apple.launchpad.launcher"  
-# Identifies the Launchpad application in the Dock.
-
 # ==================== Dock Extra Features ====================
 defaults write com.apple.dock dock-extra -int 0  # Disables additional Dock features (such as persistent extra icons)
-defaults write com.apple.dock _CFURLString -string "file:///System/Applications/Launchpad.app/"
-# Stores the file path for the Launchpad application in the Dock.
-
-defaults write com.apple.dock _CFURLStringType -int 15  # Internal macOS setting for file URL types in the Dock.
-
 
 ################################################################
 # ==================== Trackpad & Mouse ====================
@@ -243,11 +234,9 @@ defaults write com.apple.AppleMultitouchTrackpad TrackpadTwoFingerFromRightEdgeS
 # ==================== USB Mouse & Trackpad Behavior ====================
 defaults write com.apple.AppleMultitouchTrackpad USBMouseStopsTrackpad -int 0  # Keep trackpad enabled when using an external mouse
 
+###########################################################################
 # ==================== Keyboard Layout & Input Methods ====================
 # Customize the keyboard layout and input method settings.
-
-# Set default keyboard layout to ABC
-defaults write com.apple.HIToolbox AppleCurrentKeyboardLayoutInputSourceID -string "com.apple.keylayout.ABC"
 
 # Show language menu in the top right corner of the boot screen
 sudo defaults write /Library/Preferences/com.apple.loginwindow showInputMenu -bool true
@@ -264,11 +253,8 @@ defaults write com.apple.HIToolbox AppleEnabledInputSources -array-add '<dict><k
 # Mongolian layout
 defaults write com.apple.HIToolbox AppleEnabledInputSources -array-add '<dict><key>InputSourceKind</key><string>Keyboard Layout</string><key>KeyboardLayout ID</key><integer>2276</integer><key>KeyboardLayout Name</key><string>Mongolian-Cyrillic</string></dict>'
 
-# Set language and text formats
-defaults write NSGlobalDomain AppleLanguages -array "en"
-defaults write NSGlobalDomain AppleLocale -string "cs_CZ@currency=CZK"
-defaults write NSGlobalDomain AppleMeasurementUnits -string "Centimeters"
-defaults write NSGlobalDomain AppleMetricUnits -bool true
+# Set default keyboard layout to ABC
+defaults write com.apple.HIToolbox AppleCurrentKeyboardLayoutInputSourceID -string "com.apple.keylayout.ABC"
 
 # Disable press-and-hold for keys in favor of key repeat
 defaults write NSGlobalDomain ApplePressAndHoldEnabled -bool false
@@ -287,7 +273,6 @@ defaults write com.apple.HIToolbox AppleInputSourceUpdateTime -string "2025-01-0
 # Change keymapping and make persistent with a LaunchAgent
 
 PLIST_PATH="$HOME/Library/LaunchAgents/com.local.KeyRemapping.plist"
-
 mkdir -p "$HOME/Library/LaunchAgents"
 
 cat >"$PLIST_PATH" <<EOF
@@ -324,3 +309,47 @@ echo "LaunchAgent plist created at $PLIST_PATH"
 # Load the plist immediately
 launchctl load "$PLIST_PATH"
 echo "LaunchAgent loaded."
+
+##################################################
+# ==================== Screen ====================
+
+# Save screenshots to Downloads folder.
+mkdir -p ${HOME}/Pictures/Screenshots
+defaults write com.apple.screencapture location -string "${HOME}/Pictures/Screenshots"
+
+# Save screenshots in PNG format (other options: BMP, GIF, JPG, PDF, TIFF)
+defaults write com.apple.screencapture type -string "png"
+
+# Disable shadow in screenshots
+defaults write com.apple.screencapture disable-shadow -bool true
+
+#####################################################
+# ==================== Spotlight ====================
+
+if [[ "$RUN_AS_ROOT" = true ]]; then
+  # Disable Spotlight indexing for any volume that gets mounted and has not yet
+  # been indexed before.
+  # Use `sudo mdutil -i off "/Volumes/foo"` to stop indexing any volume.
+  sudo defaults write /.Spotlight-V100/VolumeConfiguration Exclusions -array "/Volumes"
+
+  # Restart spotlight
+  killall mds > /dev/null 2>&1
+fi
+
+#####################################################
+# ==================== App Store ====================
+
+# Disable in-app rating requests from apps downloaded from the App Store.
+defaults write com.apple.appstore InAppReviewEnabled -int 0
+
+##############################################################################
+# ==================== Kill/restart affected applications ====================
+
+# Restart affected applications if `--no-restart` flag is not present.
+if [[ ! ($* == *--no-restart*) ]]; then
+  for app in "cfprefsd" "Dock" "Finder" "SystemUIServer" "Terminal"; do
+    killall "${app}" > /dev/null 2>&1
+  done
+fi
+
+printf "Please log out and log back in to make all settings take effect.\n"
