@@ -24,7 +24,8 @@
 # @see: https://ss64.com/mac/syntax-defaults.html
 # @see: https://developer.apple.com/documentation/devicemanagement/systempreferences
 #
-# @inspired by https://github.com/geerlingguy/dotfiles/blob/master/.osx
+# @inspired by: https://github.com/geerlingguy/dotfiles/blob/master/.osx
+#               https://gist.github.com/ChristopherA/98628f8cd00c94f11ee6035d53b0d3c6
 
 # Warn that some commands will not be run if the script is not run as root.
 if [[ $EUID -ne 0 ]]; then
@@ -34,6 +35,35 @@ else
   RUN_AS_ROOT=true
   # Update existing `sudo` timestamp until `.osx` has finished
   while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
+fi
+
+# ==================== Test Terminal For Full disk access ====================
+
+# Test if Terminal has Full Disk Access, and if it doesn't, prompt user to set		
+# it and start over.		
+# ? A number of preferences now require Terminal.app to have Full		
+# ? Disk Access, in particular Safari.app.		
+# ? https://lapcatsoftware.com/articles/containers.html		
+# TODO: Wrap with $osx_product_version tests		
+
+printf "Testing for Full Disk Access:\n\n"		
+errstr=$( /bin/ls /Users/admin/Library/Containers/com.apple.Safari 3>&1 1>&2 2>&3 3>&- )		
+# ? Full disk access has only been in since Mojave, but which files were protected first?		
+# TODO: Research if there is an older file to test. 		
+
+if [[ $errstr == *"Operation not permitted" ]]; then		
+   printf "Terminal.app needs Full Disk Access permission\n"		
+
+    # Prompt user to give Terminal Full Disk Access		
+    # ! This worked earlier in VMware Montery, but failed on M1 MacBook Pro (14-inch 2021)		
+    # TODO: Investigate		
+
+    osascript   -e "tell application \"System Preferences\" to activate " \
+                -e "tell application \"System Preferences\" to reveal anchor \"Privacy_AllFiles\" of pane id \"com.apple.preference.security\" " \
+                -e "display dialog \"Before continuing:\n\nUnlock and check the box next to Terminal to give it full disk access.\n\nThen quit Terminal and run this script again.\" buttons {\"OK\"} default button 1 with icon caution "
+    exit # as we can't proceed until Terminal has been granted full Disk Access
+else
+   printf "Terminal.app has permission to continue\n"
 fi
 
 # ==================== General UI/UX ====================
@@ -61,6 +91,9 @@ defaults write NSGlobalDomain NSAutomaticQuoteSubstitutionEnabled -bool false
 # Disable smart dashes as they’re annoying when typing code
 defaults write NSGlobalDomain NSAutomaticDashSubstitutionEnabled -bool false
 
+# Disable Photos.app from opening when a device or card is plugged in:
+defaults -currentHost write com.apple.ImageCapture disableHotPlug -bool true
+
 # ==================== Finder Tweaks ====================
 # Customize Finder for a better file browsing experience.
 # Includes showing hidden files, file extensions, and improved search behavior.
@@ -86,8 +119,12 @@ defaults write NSGlobalDomain com.apple.springing.enabled -bool true
 # Remove the spring loading delay for directories
 defaults write NSGlobalDomain com.apple.springing.delay -float 0.1
 
-# Avoid creating .DS_Store files on network volumes
+# Avoid creating .DS_Store files on network or USB volumes
 defaults write com.apple.desktopservices DSDontWriteNetworkStores -bool true
+defaults write com.apple.desktopservices DSDontWriteUSBStores -bool true
+
+# Show the /Volumes folder
+sudo chflags nohidden /Volumes
 
 # Enable snap-to-grid for icons on the desktop and in other icon views
 /usr/libexec/PlistBuddy -c "Set :DesktopViewSettings:IconViewSettings:arrangeBy grid" ~/Library/Preferences/com.apple.finder.plist
@@ -125,64 +162,12 @@ defaults write com.apple.finder BulkRenameStartIndex -int 1          # Start num
 defaults write com.apple.finder calculateAllSizes -int 0  # Disable calculating all folder sizes for performance
 defaults write com.apple.finder CustomViewStyleVersion -int 1  # Default view style version
 
-# ==================== Finder Column Visibility and Order ====================
-# Configure the visible columns, their width, and sorting preferences.
-
-# Default sorting by name in ascending order
-defaults write com.apple.finder sortColumn -string "name"
-defaults write com.apple.finder ascending -int 1
-
-# Show "Name" column
-defaults write com.apple.finder identifier -string "name"
-defaults write com.apple.finder visible -int 1
-defaults write com.apple.finder width -int 168
-
-# Show "Date Modified" column
-defaults write com.apple.finder identifier -string "dateModified"
-defaults write com.apple.finder visible -int 1
-defaults write com.apple.finder width -int 177
-defaults write com.apple.finder ascending -int 0  # Sort in descending order
-
-# Hide "Date Created" column
-defaults write com.apple.finder identifier -string "dateCreated"
-defaults write com.apple.finder visible -int 0
-defaults write com.apple.finder width -int 177
-
-# Show "Size" column
-defaults write com.apple.finder identifier -string "size"
-defaults write com.apple.finder visible -int 1
-defaults write com.apple.finder width -int 97
-defaults write com.apple.finder ascending -int 1  # Sort in ascending order
-
-# Show "Kind" column
-defaults write com.apple.finder identifier -string "kind"
-defaults write com.apple.finder visible -int 1
-defaults write com.apple.finder width -int 115
-defaults write com.apple.finder ascending -int 1  # Sort in ascending order
-
-# Hide "Comments" column
-defaults write com.apple.finder identifier -string "comments"
-defaults write com.apple.finder visible -int 0
-defaults write com.apple.finder width -int 300
-
-# Hide cloud-sharing-related columns
-defaults write com.apple.finder identifier -string "shareOwner"
-defaults write com.apple.finder visible -int 0
-defaults write com.apple.finder width -int 210
-
-defaults write com.apple.finder identifier -string "shareLastEditor"
-defaults write com.apple.finder visible -int 0
-defaults write com.apple.finder width -int 210
-
-defaults write com.apple.finder identifier -string "invitationStatus"
-defaults write com.apple.finder visible -int 0
-defaults write com.apple.finder width -int 210
-
 # ==================== Finder Icon and Text Size ====================
-# Set default icon and text sizes for Finder views.
-defaults write com.apple.finder iconSize -int 16       # Set small icon size
-defaults write com.apple.finder showIconPreview -int 1 # Enable icon preview
-defaults write com.apple.finder textSize -int 13       # Set text size in Finder views
+# # TODO: Find if it works under macOS Sequia
+# # Set default icon and text sizes for Finder views.
+# defaults write com.apple.finder iconSize -int 16       # Set small icon size
+# defaults write com.apple.finder showIconPreview -int 1 # Enable icon preview
+# defaults write com.apple.finder textSize -int 13       # Set text size in Finder views
 
 # ==================== Miscellaneous Finder Settings ====================
 defaults write com.apple.finder useRelativeDates -int 1  # Use relative dates (e.g., "Yesterday" instead of the full date)
@@ -295,3 +280,44 @@ defaults write com.apple.HIToolbox AppleFnUsageType -int 3  # Use function keys 
 
 # Track last input source update
 defaults write com.apple.HIToolbox AppleInputSourceUpdateTime -string "2025-01-09 14:37:30 +0000"
+
+# Change keymapping and make persistent with a LaunchAgent
+
+PLIST_PATH="$HOME/Library/LaunchAgents/com.local.KeyRemapping.plist"
+
+mkdir -p "$HOME/Library/LaunchAgents"
+
+cat >"$PLIST_PATH" <<EOF
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Label</key>
+    <string>com.local.KeyRemapping.plist</string>
+    <key>ProgramArguments</key>
+    <array>
+        <string>/usr/bin/hidutil</string>
+        <string>property</string>
+        <string>--set</string>
+        <string>{"UserKeyMapping":[
+          {
+            "HIDKeyboardModifierMappingSrc":0x700000029,
+            "HIDKeyboardModifierMappingDst":0x700000039
+          },
+          {
+            "HIDKeyboardModifierMappingSrc":0x700000039,
+            "HIDKeyboardModifierMappingDst":0x700000029
+          }
+        ]}</string>
+    </array>
+    <key>RunAtLoad</key>
+    <true/>
+</dict>
+</plist>
+EOF
+
+echo "LaunchAgent plist created at $PLIST_PATH"
+
+# Load the plist immediately
+launchctl load "$PLIST_PATH"
+echo "LaunchAgent loaded."
