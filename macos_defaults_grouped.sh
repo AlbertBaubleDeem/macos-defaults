@@ -12,7 +12,7 @@ defaults write com.apple.finder AppleShowAllFiles -string "yes"
 defaults write com.apple.finder BulkRenameAddNumberTo -int 0
 defaults write com.apple.finder BulkRenameAddTextText -string ""
 defaults write com.apple.finder BulkRenameAddTextTo -int 0
-defaults write com.apple.finder BulkRenameFindText -string "Untitled"
+defaults write com.apple.finder BulkenameFindText -string "Untitled"
 defaults write com.apple.finder BulkRenameName -string "File "
 defaults write com.apple.finder BulkRenamePlaceNumberAt -int 0
 defaults write com.apple.finder BulkRenameReplaceText -string "1.0_version_"
@@ -169,157 +169,8 @@ defaults write com.apple.HIToolbox KeyboardLayout Name -string "ABC"
 # ==================== System UI & Accessibility ====================
 # Enhance macOS UI elements and improve accessibility features.
 # Includes dark mode, transparency settings, and contrast adjustments.
-defaults write com.apple.universalaccess AssistiveControlType -int 2
-defaults write com.apple.universalaccess Date -string "2024-10-01 20:03:05"
-defaults write com.apple.universalaccess Reason -string "Reset"
-defaults write com.apple.universalaccess State -int 0
-defaults write com.apple.universalaccess Date -string "2024-10-01 20:03:11"
-defaults write com.apple.universalaccess Reason -string "Reset"
-defaults write com.apple.universalaccess State -int 0
-defaults write com.apple.universalaccess Date -string "2024-10-07 17:07:37"
-defaults write com.apple.universalaccess Reason -string "Reset"
-defaults write com.apple.universalaccess State -int 0
-defaults write com.apple.universalaccess Date -string "2024-10-10 10:32:20"
-defaults write com.apple.universalaccess Reason -string "Reset"
-defaults write com.apple.universalaccess State -int 0
-defaults write com.apple.universalaccess Date -string "2024-10-15 09:56:25"
-defaults write com.apple.universalaccess Reason -string "Reset"
-defaults write com.apple.universalaccess State -int 0
-defaults write com.apple.universalaccess Date -string "2024-10-15 09:56:26"
-defaults write com.apple.universalaccess Reason -string "Reset"
-defaults write com.apple.universalaccess State -int 0
-defaults write com.apple.universalaccess Date -string "2024-10-15 17:32:09"
-defaults write com.apple.universalaccess Reason -string "Reset"
-defaults write com.apple.universalaccess State -int 0
-defaults write com.apple.universalaccess Date -string "2024-10-15 17:32:10"
-defaults write com.apple.universalaccess Reason -string "Reset"
-defaults write com.apple.universalaccess State -int 0
-defaults write com.apple.universalaccess Date -string "2024-10-17 10:46:09"
-defaults write com.apple.universalaccess Reason -string "Reset"
-defaults write com.apple.universalaccess State -int 0
-defaults write com.apple.universalaccess Date -string "2024-10-21 07:33:08"
-defaults write com.apple.universalaccess Reason -string "Reset"
-defaults write com.apple.universalaccess State -int 0
-defaults write com.apple.universalaccess Date -string "2024-10-21 07:33:09"
-defaults write com.apple.universalaccess Reason -string "Reset"
-defaults write com.apple.universalaccess State -int 0
-defaults write com.apple.universalaccess Date -string "2024-10-22 11:48:15"
-defaults write com.apple.universalaccess Reason -string "Reset"
-defaults write com.apple.universalaccess State -int 0
-defaults write com.apple.universalaccess Date -string "2024-10-22 11:59:46"
-defaults write com.apple.universalaccess Reason -string "Reset"
-defaults write com.apple.universalaccess State -int 0
-defaults write com.apple.universalaccess Date -string "2024-10-22 12:52:56"
-defaults write com.apple.universalaccess Reason -string "Reset"
-defaults write com.apple.universalaccess State -int 0
-defaults write com.apple.universalaccess Date -string "2024-10-25 13:09:42"
-defaults write com.apple.universalaccess Reason -string "Reset"
-defaults write com.apple.universalaccess State -int 0
-defaults write com.apple.universalaccess Date -string "2024-10-30 17:41:58"
-defaults write com.apple.universalaccess Reason -string "Reset"
-defaults write com.apple.universalaccess State -int 0
-defaults write com.apple.universalaccess Date -string "2024-10-30 17:42:04"
-defaults write com.apple.universalaccess Reason -string "Reset"
-defaults write com.apple.universalaccess State -int 0
-defaults write com.apple.universalaccess Date -string "2024-11-05 11:18:14"
-defaults write com.apple.universalaccess Reason -string "Reset"
-defaults write com.apple.universalaccess State -int 0
-defaults write com.apple.universalaccess Date -string "2024-11-05 11:18:16"
-defaults write com.apple.universalaccess Reason -string "Reset"
-defaults write com.apple.universalaccess State -int 0
-defaults write com.apple.universalaccess Date -string "2024-11-05 11:46:09"
-defaults write com.apple.universalaccess Reason -string "Reset"
-defaults write com.apple.universalaccess State -int 0
-defaults write com.apple.universalaccess Date -string "2024-11-09 13:02:17"
-defaults write com.apple.universalaccess Reason -string "Reset"
-defaults write com.apple.universalaccess State -int 0
-defaults write com.apple.universalaccess Date -string "2024-11-09 13:02:19"
-defaults write com.apple.universalaccess Reason -string "Reset"
-defaults write com.apple.universalaccess State -int 0
-defaults write com.apple.universalaccess Date -string "2024-11-10 12:01:22"
-defaults write com.apple.universalaccess Reason -string "Reset"
-defaults write com.apple.universalaccess State -int 0
-defaults write com.apple.universalaccess Date -string "2024-11-10 12:01:29"
-defaults write com.apple.universalaccess Reason -string "Reset"
-defaults write com.apple.universalaccess State -int 0
-defaults write com.apple.universalaccess Date -string "2024-11-10 13:14:14"
-defaults write com.apple.universalaccess Reason -string "Reset"
-defaults write com.apple.universalaccess State -int 0
-defaults write com.apple.universalaccess Date -string "2024-11-10 14:47:15"
-defaults write com.apple.universalaccess Reason -string "Reset"
-defaults write com.apple.universalaccess State -int 0
-defaults write com.apple.universalaccess Date -string "2024-11-10 15:05:03"
-defaults write com.apple.universalaccess Reason -string "Reset"
-defaults write com.apple.universalaccess State -int 0
-defaults write com.apple.universalaccess Date -string "2024-11-10 16:12:09"
-defaults write com.apple.universalaccess Reason -string "Reset"
-defaults write com.apple.universalaccess State -int 0
-defaults write com.apple.universalaccess Date -string "2024-11-11 04:38:43"
-defaults write com.apple.universalaccess Reason -string "Reset"
-defaults write com.apple.universalaccess State -int 0
-defaults write com.apple.universalaccess Date -string "2024-11-11 09:31:00"
-defaults write com.apple.universalaccess Reason -string "Reset"
-defaults write com.apple.universalaccess State -int 0
-defaults write com.apple.universalaccess Date -string "2024-11-11 09:31:05"
-defaults write com.apple.universalaccess Reason -string "Reset"
-defaults write com.apple.universalaccess State -int 0
-defaults write com.apple.universalaccess Date -string "2024-11-11 09:50:49"
-defaults write com.apple.universalaccess Reason -string "Reset"
-defaults write com.apple.universalaccess State -int 0
-defaults write com.apple.universalaccess Date -string "2024-11-19 08:43:15"
-defaults write com.apple.universalaccess Reason -string "Reset"
-defaults write com.apple.universalaccess State -int 0
-defaults write com.apple.universalaccess Date -string "2024-11-21 04:11:33"
-defaults write com.apple.universalaccess Reason -string "Reset"
-defaults write com.apple.universalaccess State -int 0
-defaults write com.apple.universalaccess Date -string "2024-11-26 16:02:21"
-defaults write com.apple.universalaccess Reason -string "Reset"
-defaults write com.apple.universalaccess State -int 0
-defaults write com.apple.universalaccess Date -string "2024-11-26 16:02:26"
-defaults write com.apple.universalaccess Reason -string "Reset"
-defaults write com.apple.universalaccess State -int 0
-defaults write com.apple.universalaccess Date -string "2024-11-27 08:05:26"
-defaults write com.apple.universalaccess Reason -string "Reset"
-defaults write com.apple.universalaccess State -int 0
-defaults write com.apple.universalaccess Date -string "2024-11-28 13:50:47"
-defaults write com.apple.universalaccess Reason -string "Reset"
-defaults write com.apple.universalaccess State -int 0
-defaults write com.apple.universalaccess Date -string "2024-11-28 13:50:49"
-defaults write com.apple.universalaccess Reason -string "Reset"
-defaults write com.apple.universalaccess State -int 0
-defaults write com.apple.universalaccess Date -string "2024-11-28 16:37:25"
-defaults write com.apple.universalaccess Reason -string "Reset"
-defaults write com.apple.universalaccess State -int 0
-defaults write com.apple.universalaccess Date -string "2024-12-06 07:55:46"
-defaults write com.apple.universalaccess Reason -string "Reset"
-defaults write com.apple.universalaccess State -int 0
-defaults write com.apple.universalaccess Date -string "2024-12-09 11:13:05"
-defaults write com.apple.universalaccess Reason -string "Reset"
-defaults write com.apple.universalaccess State -int 0
-defaults write com.apple.universalaccess Date -string "2024-12-20 10:47:42"
-defaults write com.apple.universalaccess Reason -string "Reset"
-defaults write com.apple.universalaccess State -int 0
-defaults write com.apple.universalaccess Date -string "2024-12-20 10:47:46"
-defaults write com.apple.universalaccess Reason -string "Reset"
-defaults write com.apple.universalaccess State -int 0
-defaults write com.apple.universalaccess Date -string "2024-12-23 08:57:38"
-defaults write com.apple.universalaccess Reason -string "Reset"
-defaults write com.apple.universalaccess State -int 0
-defaults write com.apple.universalaccess Date -string "2024-12-23 08:57:41"
-defaults write com.apple.universalaccess Reason -string "Reset"
-defaults write com.apple.universalaccess State -int 0
-defaults write com.apple.universalaccess Date -string "2024-12-23 13:30:55"
-defaults write com.apple.universalaccess Reason -string "Reset"
-defaults write com.apple.universalaccess State -int 0
-defaults write com.apple.universalaccess Date -string "2025-01-03 14:23:42"
-defaults write com.apple.universalaccess Reason -string "Reset"
-defaults write com.apple.universalaccess State -int 0
-defaults write com.apple.universalaccess Date -string "2025-01-03 14:23:45"
-defaults write com.apple.universalaccess Reason -string "Reset"
-defaults write com.apple.universalaccess State -int 0
-defaults write com.apple.universalaccess Date -string "2025-01-05 18:07:23"
-defaults write com.apple.universalaccess Reason -string "Reset"
-defaults write com.apple.universalaccess State -int 0
+
+
 
 # ==================== Screenshots ====================
 # Configure how screenshots are taken and saved.
